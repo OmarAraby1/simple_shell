@@ -7,7 +7,7 @@
  * Return: 0 Success
  */
 
-int main()
+int main(void)
 {
 	printf("Betty Would Be PRoud");
 	return (0);
