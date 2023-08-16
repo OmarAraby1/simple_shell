@@ -7,7 +7,18 @@
 #include <string.h>
 #include <time.h>
 #include <math.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <dirent.h>
 
 int main(int argc, char **argv);
+void _execute(char **argv);
+char *_pathFinder(char *exe);
+
+int _strlen(char *s);
+char *_strcpy(char *dest, char *src);
+char *_strdup(char *str);
+char *_strcat(char *dest, char *src);
+int _putchar(char c);
 
 #endif
