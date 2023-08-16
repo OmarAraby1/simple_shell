@@ -8,14 +8,16 @@
 
 void _execute(char **argv)
 {
-	char *exe;
+	char *exe = NULL;
+	char *fexe = NULL;
 
 	if (argv)
 	{
 		exe = argv[0];
-		if (execve(exe, argv, NULL) == -1)
+		fexe = _pathFinder(exe);
+		if (execve(fexe, argv, NULL) == -1)
 		{
-			perror("Error");
+			perror("Error:");
 		}
 	}
 }
