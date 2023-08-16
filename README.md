@@ -42,3 +42,4 @@ gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o nautilus
 --WRITE OUR OWN getenv--
 --CHECK COMMANDS TO SEE WHETHER IT'S built-in OR executable script OR alias BEFORE FINDING THE PATH (FORK)--
 --THE SHELL SHOULDN'T EXIT AFTER SUCCESSFUL EXECUTION--
+--AM NOT SURE IF WE HANDELED ALL ERRORS--
