@@ -36,7 +36,7 @@ Compilation
 
 gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o nautilus
 
-
+TO DO LIST
 ~~~~~~~~~~TO DO LIST~~~~~~~~~~
 
 --WRITE OUR OWN getenv--
