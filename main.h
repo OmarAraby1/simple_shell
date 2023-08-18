@@ -14,6 +14,7 @@
 int main(int argc, char **argv);
 void _execute(char **argv);
 char *_pathFinder(char *exe);
+char *_getenv(const char *var);
 
 int _strlen(char *s);
 char *_strcpy(char *dest, char *src);
