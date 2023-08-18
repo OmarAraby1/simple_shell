@@ -12,7 +12,7 @@ char *_pathFinder(char *exe)
 	int exe_len, dir_len;
 	struct stat buffer;
 
-	path = getenv("PATH");
+	path = _getenv("PATH");
 	if (path)
 	{
 		path2 = _strdup(path);
