@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
-			write(STDOUT_FILENO, pr, 4);
+			write(STDIN_FILENO, pr, 4);
 		out_gl = getline(&lineptr, &n, stdin);
 		if (out_gl == -1)
 			break;
