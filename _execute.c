@@ -15,9 +15,9 @@ void _execute(char **argv)
 	{
 		exe = argv[0];
 		fexe = _pathFinder(exe);
-		if (execve(fexe, argv, NULL) == -1)
+		if (execve(fexe, argv, environ) == -1)
 		{
-			perror("Error:");
+			perror("Error: ");
 		}
 	}
 }
