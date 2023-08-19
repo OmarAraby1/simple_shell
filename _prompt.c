@@ -9,10 +9,8 @@
 
 char **_tokenize(char *lineptr, char *lineptr2, const char *dilem)
 {
-	char **argv;
-	char *tok;
-	int n_tok = 0;
-	int i;
+	char **argv, *tok;
+	int n_tok = 0, i;
 
 	tok = strtok(lineptr, dilem);
 	while (tok != NULL)
@@ -26,10 +24,18 @@ char **_tokenize(char *lineptr, char *lineptr2, const char *dilem)
 	for (i = 0; tok != NULL; i++)
 	{
 		argv[i] = malloc(sizeof(char) * _strlen(tok));
+		if (argv == NULL)
+		{
+			free(lineptr2);
+			free(argv);
+			perror("memory allocation error");
+			return (NULL);
+		}
 		_strcpy(argv[i], tok);
 		tok = strtok(NULL, dilem);
 	}
-	argv[i] = '\0';
+	argv[i] = NULL;
+	free(lineptr2);
 	return (argv);
 }
 
@@ -43,32 +49,49 @@ char **_tokenize(char *lineptr, char *lineptr2, const char *dilem)
 int main(int argc, char **argv)
 {
 	ssize_t out_gl;
-	char *pr = "oi $ ";
-	char *lineptr;
-	char *lineptr2;
+	char *pr = "oi$ ", *lineptr, *lineptr2;
 	const char *dilem = " \n";
 	size_t n = 0;
+	pid_t pid;
 	(void)argc;
 
 	while (1)
 	{
-		printf("%s", pr);
+		if (isatty(STDIN_FILENO))
+			printf("%s", pr);
 		out_gl = getline(&lineptr, &n, stdin);
 		if (out_gl == -1)
+			break;
+		if (_strcmp(lineptr, "exit\n") == 0)
+			break;
+		if (_strcmp(lineptr, "env\n") == 0)
 		{
-			return (-1);
+			_print_env();
+			continue;
 		}
-		lineptr2 = malloc(sizeof(char) * out_gl);
-		if (lineptr2 == NULL)
+		pid = fork();
+		if (pid == 0)
 		{
-			perror("memory allocation error");
-			return (-1);
+			lineptr2 = malloc(sizeof(char) * out_gl);
+			if (lineptr2 == NULL)
+			{
+				perror("memory allocation error");
+				return (-1);
+			}
+			_strcpy(lineptr2, lineptr);
+			argv = _tokenize(lineptr, lineptr2, dilem);
+			_execute(argv);
+			exit(0);
 		}
-		_strcpy(lineptr2, lineptr);
-		argv = _tokenize(lineptr, lineptr2, dilem);
-		_execute(argv);
+		else if (pid > 0)
+			wait(NULL);
+
+		else
+		{
+			perror("fork error");
+			exit(1);
+		}
 	}
 	free(lineptr);
-	free(lineptr2);
 	return (0);
 }
