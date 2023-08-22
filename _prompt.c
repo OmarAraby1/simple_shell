@@ -49,12 +49,14 @@ char **_tokenize(char *lineptr, char *lineptr2, const char *dilem)
 int main(int argc, char **argv)
 {
 	ssize_t out_gl;
-	char *pr = "oi$ ", *lineptr, *lineptr2;
+	char *pr = "oi$ ", *lineptr, *lineptr2, *name;
 	const char *dilem = " \n";
 	size_t n = 0;
+	int check;
 	pid_t pid;
 	(void)argc;
 
+	name = argv[0];
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
@@ -65,31 +67,31 @@ int main(int argc, char **argv)
 		if (_strcmp(lineptr, "exit\n") == 0)
 			break;
 		if (_strcmp(lineptr, "env\n") == 0)
-		{
-			_print_env();
+		{_print_env();
 			continue;
 		}
-		pid = fork();
-		if (pid == 0)
-		{
-			lineptr2 = malloc(sizeof(char) * out_gl);
-			if (lineptr2 == NULL)
-			{
-				perror("memory allocation error");
-				return (-1);
-			}
-			_strcpy(lineptr2, lineptr);
-			argv = _tokenize(lineptr, lineptr2, dilem);
-			_execute(argv);
-			exit(0);
+		lineptr2 = malloc(sizeof(char) * out_gl);
+		if (lineptr2 == NULL)
+		{perror("memory allocation error");
+			return (-1);
 		}
-		else if (pid > 0)
-			wait(NULL);
-
-		else
+		_strcpy(lineptr2, lineptr);
+		argv = _tokenize(lineptr, lineptr2, dilem);
+		check = _check(argv, name);
+		if (check == 0)
 		{
-			perror("fork error");
-			exit(1);
+			{pid = fork();
+				if (pid == -1)
+				{perror("Error child:");
+					exit(1);
+				}
+				if (pid == 0)
+				{_execute(argv);
+					exit(0);
+				}
+				else
+					wait(NULL);
+			}
 		}
 	}
 	free(lineptr);
