@@ -18,6 +18,9 @@
 extern char **environ;
 
 int main(int argc, char **argv);
+char **_tokenize(char *lineptr, char *lineptr2, const char *dilem);
+int _check(char **argv, char *name);
+char *_error(char **argv, char *name);
 void _execute(char **argv);
 char *_pathFinder(char *exe);
 char *_getenv(char *var);
