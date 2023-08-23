@@ -6,7 +6,7 @@
  * @delim: delimeter
  * Return: pointer to tokenized list
  */
-char **_tokenize(char *str, const char *delim)
+char **_tokenize(char *str, char *delim)
 {
 	int len = 0, nlet = 0, i = 0;
 	char **toklist = NULL;
@@ -34,7 +34,7 @@ char **_tokenize(char *str, const char *delim)
 		perror("Error");
 		free(toklist);
 	}
-	tok = strtok(str2, delim);
+	tok = _strtok(str2, delim);
 	while (tok)
 	{
 		toklist[i] = malloc(sizeof(char) * ((_strlen(tok)) + 1));
@@ -42,7 +42,7 @@ char **_tokenize(char *str, const char *delim)
 			_free(toklist);
 		_strcpy(toklist[i], tok);
 		i++;
-		tok = strtok(NULL, delim);
+		tok = _strtok(NULL, delim);
 	}
 	toklist[i] = NULL;
 	free(str2);
