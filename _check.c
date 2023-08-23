@@ -1,54 +1,32 @@
 #include "main.h"
 
 /**
- * _error - prints the error
- * @argv: tokenized string
- * @name: input command
- * Return: pointer to string
+ * _check - check command input
+ * @buff: read line by getline
+ * @envir: environment variable
  */
-
-char *_error(char **argv, char *name)
+void _check(char  *buff, char **envir)
 {
-	char *err;
-	int len;
+	int f = 0;
+	struct stat cmd;
+	char **stok = NULL, *env;
 
-	len = _strlen(name) + _strlen(argv[0]) + 17;
-	err = malloc(sizeof(char) * (len + 1));
-	if (!err)
-	{
-		return (NULL);
-	}
-	_strcpy(err, name);
-	_strcat(err, ": 1: ");
-	_strcat(err, argv[0]);
-	_strcat(err, ": not found\n");
-	return (err);
-}
+	env = _getenv("PATH");
+	stok = _tokenize(buff, " \t");
 
-/**
- * _check - check if command exist
- * @argv: list of passed arguments to the prompt
- * @name: input command
- * Return: Nothing
- */
-
-int _check(char **argv, char *name)
-{
-	char *exe = NULL, *fexe = NULL, *err;
-
-	if (argv)
-	{exe = argv[0];
-		if (exe[0] != '/' && exe[0] != '0')
-			fexe = _pathFinder(exe);
-		if (!fexe || (access(fexe, F_OK) == -1))
-		{err = _error(argv, name);
-			write(STDERR_FILENO, err, _strlen(err));
-			return (1);
-		}
-		else
-		{
-			return (0);
-		}
-	}
-	return (1);
+	if (!(_strcmp(stok[0], "exit")))
+		f = _myexit(stok, buff);
+	else if (stok[0] == NULL)
+		perror("./nautilus");
+	else if (!(_strcmp(stok[0], "env")))
+		_print_env(envir);
+	if (stat(stok[0], &cmd) == 0)
+		f = 1;
+	else if (_strcmp(stok[0], "env") != 0)
+		f = _pathCheker(stok, env);
+	if (f == 1 && _strcmp(stok[0], "env") != 0)
+		_fork(stok);
+	else if (_strcmp(stok[0], "env") != 0)
+		perror("./nautilus");
+	_free(stok);
 }
