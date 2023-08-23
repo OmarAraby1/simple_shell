@@ -1,50 +1,64 @@
 #include "main.h"
 
 /**
- * sighand - action for SIGINT change
- * @sig: value for SIGINT
+ * sighand - Prints a new prompt upon a signal
+ * @sig: The signal
  */
 
 void sighand(int sig)
 {
-	if (sig == SIGINT)
-	write(STDOUT_FILENO, "\noi$ ", 5);
+	char *pro = "\noi$ ";
+
+	(void)sig;
+	signal(SIGINT, sighand);
+	write(STDIN_FILENO, pro, 5);
 }
 
 /**
- * main - my prompt main
- *@argc: arg count
- *@argv: list of parameters
- * Return: 0 Success
+ * main - simple shell entrance
+ * @argc: The number of arguments
+ * @argv: array of pointers to the arguments
+ * Return: value of last executed
  */
-int main(int argc, char **argv)
+
+int main(int argc, char *argv[])
 {
-size_t buff_size = 0;
-ssize_t out_get = 1;
-char *buff;
-int nwords = 0;
+	int ret = 0, retn, *com_ret = &retn;
+	char *pro = "oi$ ", *nl = "\n";
 
-(void)argc, (void)argv;
-
-	while (out_get > 0)
+	name = argv[0];
+	hist = 1;
+	signal(SIGINT, sighand);
+	*com_ret = 0;
+	environ = _copyenv();
+	if (!environ)
+		exit(-100);
+	if (argc != 1)
 	{
-		signal(SIGINT, sighand);
-		if (isatty(STDIN_FILENO))
-			write(STDOUT_FILENO, "oi$ ", 4);
-		out_get = _getline(&buff, &buff_size, stdin);
-		nwords = _count(buff);
-		if (out_get < 0)
+		ret = _comproc(argv[1], com_ret);
+		free_env();
+		return (*com_ret);
+	}
+	if (!isatty(STDIN_FILENO))
+	{
+		while (ret != END_OF_FILE && ret != EXIT)
+			ret = _arghand(com_ret);
+		free_env();
+		return (*com_ret);
+	}
+	while (1)
+	{
+		write(STDOUT_FILENO, pro, 4);
+		ret = _arghand(com_ret);
+		if (ret == END_OF_FILE || ret == EXIT)
 		{
-			if (isatty(STDIN_FILENO))
-				write(STDOUT_FILENO, "\n", 1);
-			free(buff);
-			exit(EXIT_SUCCESS);
-		}
-		if (nwords > 0)
-		{
-			_check(buff, environ);
+			if (ret == END_OF_FILE)
+				write(STDOUT_FILENO, nl, 1);
+			free_env();
+			exit(*com_ret);
 		}
 	}
-	free(buff);
-	return (0);
+
+	free_env();
+	return (*com_ret);
 }
