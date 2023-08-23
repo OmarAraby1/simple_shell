@@ -1,50 +1,88 @@
 #include "main.h"
 
 /**
- * _tokenize - turn string into tokenz
- * @str: the buffer
- * @delim: delimeter
- * Return: pointer to tokenized list
+ * token_len - Locates the delimiter index
+ * @str: The string to be searched
+ * @delim: The delimiter character
+ * Return: The delimiter index
  */
-char **_tokenize(char *str, char *delim)
-{
-	int len = 0, nlet = 0, i = 0;
-	char **toklist = NULL;
-	char *str2 = NULL;
-	char *tok = NULL;
 
-	str2 = malloc(sizeof(char *) + _strlen(str));
-	if (str2 == NULL)
+int token_len(char *str, char *delim)
+{
+	int i = 0, len = 0;
+
+	while (*(str + i) && *(str + i) != *delim)
 	{
-		perror("Error");
-		free(str2);
-	}
-	while (str[len] != '\0')
-	{
-		if (str[len] == '\n')
-			str[len] = '\0';
-		if (str[len] != delim[0])
-			nlet++;
 		len++;
-	}
-	str2 = _strcpy(str2, str);
-	toklist = malloc((sizeof(char *) * (nlet + 1)));
-	if (toklist == NULL)
-	{
-		perror("Error");
-		free(toklist);
-	}
-	tok = _strtok(str2, delim);
-	while (tok)
-	{
-		toklist[i] = malloc(sizeof(char) * ((_strlen(tok)) + 1));
-		if (toklist[i] == NULL)
-			_free(toklist);
-		_strcpy(toklist[i], tok);
 		i++;
-		tok = _strtok(NULL, delim);
 	}
-	toklist[i] = NULL;
-	free(str2);
-	return (toklist);
+	return (len);
+}
+
+/**
+ * count_tokens - Counts the number of words
+ * @str: The string to be searched
+ * @delim: The delimiter character
+ * Return: The number of words
+ */
+
+int count_tokens(char *str, char *delim)
+{
+	int i, tok = 0, len = 0;
+
+	for (i = 0; *(str + i); i++)
+		len++;
+
+	for (i = 0; i < len; i++)
+	{
+		if (*(str + i) != *delim)
+		{
+			tok++;
+			i += token_len(str + i, delim);
+		}
+	}
+	return (tok);
+}
+
+/**
+ * _strtok - Tokenizes a string
+ * @str: The string
+ * @delim: The delimiter character
+ * Return: A pointer to an array of tokens
+ */
+
+char **_strtok(char *str, char *delim)
+{
+	char **ptr;
+	int i = 0, tok, t, lets, l;
+
+	tok = count_tokens(str, delim);
+	if (tok == 0)
+		return (NULL);
+	ptr = malloc(sizeof(char *) * (tok + 2));
+	if (!ptr)
+		return (NULL);
+	for (t = 0; t < tok; t++)
+	{
+		while (str[i] == *delim)
+			i++;
+		lets = token_len(str + i, delim);
+		ptr[t] = malloc(sizeof(char) * (lets + 1));
+		if (!ptr[t])
+		{
+			for (i -= 1; i >= 0; i--)
+				free(ptr[i]);
+			free(ptr);
+			return (NULL);
+		}
+		for (l = 0; l < lets; l++)
+		{
+			ptr[t][l] = str[i];
+			i++;
+		}
+		ptr[t][l] = '\0';
+	}
+	ptr[t] = NULL;
+	ptr[t + 1] = NULL;
+	return (ptr);
 }
