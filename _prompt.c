@@ -8,7 +8,7 @@
 void sighand(int sig)
 {
 	if (sig == SIGINT)
-	write(STDOUT_FILENO, "\n($) ", 5);
+	write(STDOUT_FILENO, "\noi$ ", 5);
 }
 
 /**
