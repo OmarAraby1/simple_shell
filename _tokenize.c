@@ -11,7 +11,7 @@ char **_tokenize(char *str, char *delim)
 	int len = 0, nlet = 0, i = 0;
 	char **toklist = NULL;
 	char *str2 = NULL;
-	char *tok = NULL;
+	char **tok = NULL;
 
 	str2 = malloc(sizeof(char *) + _strlen(str));
 	if (str2 == NULL)

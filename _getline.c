@@ -65,10 +65,10 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 		}
 		if (r == 0 && inp != 0)
 		{
-			input++;
+			inp++;
 			break;
 		}
-		if (input >= 120)
+		if (inp >= 120)
 			buff = _realloc(buff, inp, inp + 1);
 		buff[inp] = c;
 		inp++;
