@@ -9,13 +9,13 @@
 
 unsigned int is_delim(char c, char *delim)
 {
-    while(*delim != '\0')
-    {
-        if(c == *delim)
-            return 1;
-        delim++;
-    }
-    return 0;
+	while (*delim != '\0')
+	{
+		if (c == *delim)
+			return (1);
+		delim++;
+	}
+	return (0);
 }
 
 /**
@@ -30,40 +30,40 @@ char *_strtok(char *str, char *delim)
 	static char *str2;
 	char *ret;
 
-	if(!str)
+	if (!str)
 	{
 		str = str2;
 	}
-	if(!str)
+	if (!str)
 	{
 		return (NULL);
 	}
-	while(1)
+	while (1)
 	{
-		if(is_delim(*str, delim))
+		if (is_delim(*str, delim))
 		{
 			str++;
 			continue;
 		}
-		if(*str == '\0')
+		if (*str == '\0')
 		{
-			return (NULL); 
+			return (NULL);
 		}
 		break;
 	}
 	ret = str;
-	while(1)
+	while (1)
 	{
-		if(*str == '\0')
+		if (*str == '\0')
 		{
 			str2 = str;
-			return ret;
+			return (ret);
 		}
-		if(is_delim(*str, delim))
+		if (is_delim(*str, delim))
 		{
 			*str = '\0';
 			str2 = str + 1;
-			return ret;
+			return (ret);
 		}
 		str++;
 	}
