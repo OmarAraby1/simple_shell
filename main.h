@@ -18,15 +18,20 @@
 extern char **environ;
 
 int main(int argc, char **argv);
-char **_tokenize(char *lineptr, char *lineptr2, const char *dilem);
-int _check(char **argv, char *name);
-char *_error(char **argv, char *name);
-void _execute(char **argv);
-char *_pathFinder(char *exe);
+void sighand(int sig);
+char **_tokenize(char *str, const char *delim);
+void _check(char *buff, char **envir);
+int _myexit(char **stok, char *buff);
+void _free(char **pp);
+int _pathCheker(char **stok, char *env);
+int _fork(char **stok);
 char *_getenv(char *var);
-void _print_env(void);
+void _print_env(char **env);
 
-int _strlen(char *s);
+int _atoi(char *s);
+size_t _count(char *s);
+void *_realloc(void *ptr, unsigned int s_o, unsigned int s_n);
+size_t _strlen(char *s);
 char *_strcpy(char *dest, char *src);
 char *_strdup(char *str);
 char *_strcat(char *dest, char *src);
