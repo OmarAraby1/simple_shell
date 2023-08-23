@@ -3,8 +3,8 @@
 /**
  * _realloc -reallocate new memory to a pointer
  * @ptr: pointer to reallocate
- * @old_size: old size
- * @new_size: new size
+ * @s_o: old size
+ * @s_n: new size
  * Return: new pointer with new size
  */
 void *_realloc(void *ptr, unsigned int s_o, unsigned int s_n)
