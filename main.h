@@ -19,11 +19,12 @@ extern char **environ;
 
 int main(int argc, char **argv);
 void sighand(int sig);
-char **_tokenize(char *str, const char *delim);
+char **_tokenize(char *str, char *delim);
 void _check(char *buff, char **envir);
 int _myexit(char **stok, char *buff);
 void _free(char **pp);
 int _pathCheker(char **stok, char *env);
+char *_strtok(char *str, char *delim);
 int _fork(char **stok);
 char *_getenv(char *var);
 void _print_env(char **env);
