@@ -31,7 +31,7 @@ int nwords = 0;
 		signal(SIGINT, sighand);
 		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, "oi$ ", 4);
-		out_get = getline(&buff, &buff_size, stdin);
+		out_get = _getline(&buff, &buff_size, stdin);
 		nwords = _count(buff);
 		if (out_get < 0)
 		{
