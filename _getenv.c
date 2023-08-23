@@ -9,14 +9,15 @@
 char *_getenv(char *var)
 {
 	int i, len;
+	char *env;
 
 	len = _strlen(var);
 	for (i = 0; environ[i]; i++)
 	{
 		if (_strncmp(var, environ[i], len) == 0)
 		{
-			return (environ[i]);
+			env = environ[i] + 5;
 		}
 	}
-	return (NULL);
+	return (env);
 }
