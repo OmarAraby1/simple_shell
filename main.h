@@ -25,7 +25,7 @@ int _myexit(char **stok, char *buff);
 void _free(char **pp);
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 int _pathCheker(char **stok, char *env);
-char **_strtok(char *str, char *delim);
+char *_strtok(char *str, char *delim);
 int _fork(char **stok);
 char *_getenv(char *var);
 void _print_env(char **env);
